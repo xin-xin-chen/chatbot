@@ -1,0 +1,153 @@
+<mvc:View controllerName="chatbot.chat.controller.Main" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	 xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" >
+	<App id="idAppControl">
+		<pages>
+			<Page title="{i18n>title}" id="message-page" showHeader="true">
+				<customHeader>
+					<Bar>
+						<contentLeft>
+							<!--Image src="img/logo.png" width="40px" height="40px"/-->
+						</contentLeft>
+						<contentMiddle>
+							<Text class="headerText" text="SAP Chatbot"></Text>
+						</contentMiddle>
+						<contentRight>
+							<Image src="img/sap_logo.png" width="60px" height="30px"/>
+						</contentRight>
+					</Bar>
+				</customHeader>
+				<subHeader>
+					<Bar>
+						<contentLeft>
+							<f:Avatar src="sap-icon://co" displaySize="XS" class="sapUiTinyMarginEnd topAvater"></f:Avatar>
+							<f:Avatar src="sap-icon://person-placeholder" displaySize="XS" class="topAvater"></f:Avatar>
+						</contentLeft>
+						<contentMiddle></contentMiddle>
+						<contentRight></contentRight>
+					</Bar>
+				</subHeader>
+				<List items="{chatmodel>/chat}" id="chatList" updateFinished="scrollToLastMessage" noDataText=" " width="100%"
+					class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+					<CustomListItem>
+						<content>
+							<FlexBox height="auto" alignItems="Start" justifyContent="{= ${chatmodel>author} === 'bot' ? 'Start' : 'End'}" class="sapUiTinyMargin "
+								width="98.2%">
+								<items>
+									<!--<f:Avatar src="sap-icon://co" visible="{= ${chatmodel>author} === 'bot'}" displaySize="XS" class="sapUiSmallMarginEnd"></f:Avatar>-->
+									<FlexBox wrap="Wrap" class="maxWidth" backgroundDesign="{= ${chatmodel>author} === 'bot' ? 'Solid' : 'Translucent'}" height="auto"
+										width="auto">
+										<items>
+											<!-- Text Control rendered as HTML Code in SAPUI5 -->
+											<core:HTML content="&lt;p&gt;{chatmodel>content}&lt;/p&gt;" visible="{= ${chatmodel>type} === 'text'}"></core:HTML>
+											<!-- Button Control rendered as Button in SAPUI5 -->
+											<VBox visible="{= ${chatmodel>type} === 'buttons'}" class="sapUiTinyMargin">
+												<core:HTML content="&lt;p&gt;{chatmodel>content/title}&lt;/p&gt;"></core:HTML>
+												<HBox items="{chatmodel>content/buttons}">
+													<Button text="{chatmodel>title}" class="buttonPadding" type="Emphasized" width="100%" tooltip="{chatmodel>type}" press="onPressAnyButton">
+														<customData>
+															<core:CustomData value="{chatmodel>value}"></core:CustomData>
+														</customData>
+													</Button>
+												</HBox>
+											</VBox>
+											<!-- Card Control rendered as Custom Card Control in SAPUI5 -->
+											<!--<cust:Card title="{chatmodel>content/title}" subtitle="{chatmodel>content/subtitle}" imageUrl="{chatmodel>content/imageUrl}"
+												buttons="{chatmodel>content/buttons}" visible="{= ${chatmodel>type} === 'card'}">
+												<cust:buttons>
+													<Button text="{chatmodel>title}" type="Emphasized" width="95%" tooltip="{chatmodel>type}" press="onPressAnyButton">
+														<customData>
+															<core:CustomData value="{chatmodel>value}"></core:CustomData>
+														</customData>
+													</Button>
+												</cust:buttons>
+											</cust:Card>-->
+											<!-- Carousel rendered as Custom Carousel including Custom Card Control in SAPUI5 -->
+											<!--<cust:CardCarousel cards="{chatmodel>content}" visible="{= ${chatmodel>type} === 'carousel'}" class="sapUiTinyMargin">
+												<cust:cards>
+													<cust:Card title="{chatmodel>title}" subtitle="{chatmodel>subtitle}" imageUrl="{chatmodel>imageUrl}" buttons="{chatmodel>buttons}">
+														<cust:buttons>
+															<Button text="{chatmodel>title}" width="95%" tooltip="{chatmodel>type}" press="onPressAnyButton">
+																<customData>
+																	<core:CustomData value="{chatmodel>value}"></core:CustomData>
+																</customData>
+															</Button>
+														</cust:buttons>
+													</cust:Card>
+												</cust:cards>
+											</cust:CardCarousel>-->
+											<!-- Quick Replies rendered as VBox including Buttons in SAPUI5 -->
+											<VBox visible="{= ${chatmodel>type} === 'quickReplies'}" class="sapUiTinyMargin">
+												<core:HTML content="&lt;p&gt;{chatmodel>content/title}&lt;/p&gt;"></core:HTML>
+												<ScrollContainer content="{chatmodel>content/buttons}" horizontal="true" vertical="false">
+													<Button text="{chatmodel>title}" class="buttonPadding" type="Emphasized" tooltip="postback" press="onPressAnyButton">
+														<customData>
+															<core:CustomData value="{chatmodel>value}"></core:CustomData>
+														</customData>
+													</Button>
+												</ScrollContainer>
+											</VBox>
+											<!-- List Control rendered as a Custom List Item in SAPUI5 -->
+											<List items="{chatmodel>content/elements}" visible="{= ${chatmodel>type} === 'list'}" class="sapUiTinyMargin" growing="true"
+												growingThreshold="5" growingScrollToLoad="false">
+												<CustomListItem class="sapUiTinyMarginTop">
+													<HBox>
+														<HBox>
+															<core:Icon src="{chatmodel>imageUrl}" class="sapUiTinyMarginTop" width="150px" size="100px" color="#3C4D5C"></core:Icon>
+															<!--<Image src="{chatmodel>imageUrl}" width="150px" class="sapUiTinyMarginTop"></Image>-->
+														</HBox>
+														<VBox class="sapUiSmallMarginBegin">
+															<core:HTML content="&lt;p&gt;{chatmodel>title}&lt;/p&gt;"></core:HTML>
+															<Label text="{chatmodel>subtitle}"></Label>
+															<HBox items="{chatmodel>buttons}">
+																<Button text="{chatmodel>title}" class="buttonPadding" type="Emphasized"
+																	width="100%" tooltip="{chatmodel>type}" press="onPressAnyButton" visible="{= ${chatmodel>buttons} !== 'checkbox'}">
+																	<customData>
+																		<core:CustomData value="{chatmodel>value}"></core:CustomData>
+																	</customData>
+																</Button>
+															</HBox>
+														</VBox>
+													</HBox>
+												</CustomListItem>
+											</List>
+											<!-- Image Control rendered as Image in SAPUI5 -->
+											<Image src="{= typeof ${chatmodel>content} === 'string' ? ${chatmodel>content} : ''}" visible="{= ${chatmodel>type} === 'picture'}" class="sapUiTinyMargin"></Image>
+										</items>
+									</FlexBox>
+									<!--<f:Avatar src="sap-icon://person-placeholder" displaySize="XS" visible="{= ${chatmodel>author} === 'user'}"
+										class="sapUiSmallMarginBegin sapUiSmallMarginEnd"></f:Avatar>-->
+								</items>
+							</FlexBox>
+						</content>
+					</CustomListItem>
+				</List>
+				<footer>
+					<Toolbar id="inputPanel" class="input-panel" height="3.5rem">
+						<FlexBox direction="Column" alignItems="Stretch" width="100%">
+							<items>
+								<FlexBox direction="Row" alignItems="Start" width="100%">
+									<items>
+										<VBox width="100%">
+											<FlexBox alignItems="Start">
+												<items>
+													<TextArea id="MessageInput" rows="1" class="input-message" placeholder="{i18n>MESSAGE_INPUT}" width="99%" liveChange="onInputVal"
+														maxLength="2040">
+														<layoutData>
+															<FlexItemData growFactor="3"/>
+														</layoutData>
+													</TextArea>
+													<Button id="btnSend" class="input-send-button" icon="sap-icon://paper-plane" type="Emphasized" enabled="true" text="Enter"
+														press="onSendChat"/>
+												</items>
+											</FlexBox>
+										</VBox>
+									</items>
+								</FlexBox>
+							</items>
+						</FlexBox>
+					</Toolbar>
+				</footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

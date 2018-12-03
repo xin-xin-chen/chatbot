@@ -1,0 +1,28 @@
+{
+	"dependencies": {
+		"body-parser": "^1.15.2",
+		"cors": "latest",
+		"express": "^4.14.0",
+		"js-base64": "latest",
+		"npm": "^6.1.0",
+		"recastai": "^3.1.1",
+		"requestify": "latest"
+	},
+	"description": "Connects UI with Conversational AI",
+	"devDependencies": {
+		"jest": "^23.6.0",
+		"jest-junit": "^5.2.0"
+	},
+	"files": [],
+	"main": "server.js",
+	"name": "connector",
+	"scripts": {
+		"test": "jest --config jest.json",
+		"test-coverage": "jest --coverage --config jest.json",
+		"start": "node server.js"
+	},
+	"engines": {
+		"node": "8.x"
+	},
+	"version": "1.0.0"
+}

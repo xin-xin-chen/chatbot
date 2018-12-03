@@ -1,0 +1,21 @@
+{
+  "welcomeFile": "/chat/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/chat/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    },
+    {
+		"source": "^/connector/(.*)$",
+		"destination": "connector",
+		"target": "$1",
+	    "csrfProtection": false,
+	    "authenticationType": "none"
+	}
+  ]
+}

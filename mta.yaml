@@ -1,0 +1,44 @@
+ID: chatbot
+_schema-version: '2.1'
+description: UI and Chatbot connector
+version: 0.0.1
+modules:
+  - name: connector
+    type: nodejs
+    path: connector
+    provides:
+      - name: connector_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: uaa_chatbot
+  - name: chat
+    type: html5
+    path: chat
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    build-parameters:
+      builder: grunt
+    requires:
+      - name: uaa_chatbot
+      - name: dest_chatbot
+      - name: connector
+      - name: connector_api
+        group: destinations
+        properties:
+          name: connector
+          url: '~{url}'
+          forwardAuthToken: true
+resources:
+  - name: uaa_chatbot
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: dest_chatbot
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
